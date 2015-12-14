@@ -10,7 +10,10 @@ Le fichier d'entré comprend les instructions suivantes:
 - ligne n+1: instructions de déplacement (ex: "GAGAGGAGGA")
 
 ## Solution
-La soltion est donc une application Java 1.7, buildé grâce à l'outil Maven.
+La solution se veut simple et ouverte aux évolutions futures.
+Ainsi implémenter de nouvelles instructions ou de nouvelles tondeuses sera possible en peu de lignes.
+
+La soltion est une application Java 1.7, buildé grâce à l'outil Maven.
 Pour l'execution, executer la commande suivante `mvn package`
 Executer ensuite le jar généré avec en paramètre un fichier `java -jar mowitnow.jar fichier.txt`
 
@@ -18,7 +21,6 @@ Executer ensuite le jar généré avec en paramètre un fichier `java -jar mowit
 Le supermower3000 est amorcé par la classe App, prenant en paramètre un fichier d'entrée.
 Le modèle est constitué d'une entité abstraite Vehicle.
 L'entité Mower hérite de Vehicle et implemente ses insctructions possible (G, D, A), ainsi que les valeurs de rotation et de mouvement associés (classe Action)
-L'avantage est qu'il sera aisé de créer d'autres tondeuses, ayant d'autres instructions.
 Le service DescriptionReader lit parse les informations du fichier pour créer des Vehicles et une Lawn.
 Il retourne une liste de VehicleRunner, chacune comportant une tondeuse et une pelouse. 
 Cette classe implémente Runnable, ce qui permet de gérer le nombre de tondeuses en parallèle grâce à un executor (ici un SingleThreadExecutor)
