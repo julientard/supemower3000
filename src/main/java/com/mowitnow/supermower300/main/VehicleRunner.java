@@ -2,14 +2,11 @@ package com.mowitnow.supermower300.main;
 
 import java.util.concurrent.Executor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mowitnow.supermower300.constant.OrientationEnum;
-import com.mowitnow.supermower300.entities.Action;
-import com.mowitnow.supermower300.entities.Lawn;
-import com.mowitnow.supermower300.entities.vehicles.Mower;
-import com.mowitnow.supermower300.entities.vehicles.Vehicle;
+import com.mowitnow.supermower300.entities.*;
+import com.mowitnow.supermower300.entities.vehicles.*;
+
+import org.slf4j.*;
 
 /**
  * Drive a vehicle on a lawn
@@ -22,72 +19,80 @@ import com.mowitnow.supermower300.entities.vehicles.Vehicle;
  */
 public class VehicleRunner implements Runnable {
 
-	final static Logger logger = LoggerFactory.getLogger(Mower.class);
+    final static Logger logger = LoggerFactory.getLogger(Mower.class);
 
-	private Vehicle vehicle;
+    private Vehicle vehicle;
 
-	private Lawn lawn;
+    private Lawn lawn;
 
-	public VehicleRunner(Vehicle vehicle, Lawn lawn) {
-		super();
-		this.vehicle = vehicle;
-		this.lawn = lawn;
-	}
+    public VehicleRunner(final Vehicle vehicle, final Lawn lawn) {
+        super();
+        this.vehicle = vehicle;
+        this.lawn = lawn;
+    }
 
-	/**
-	 * Run the vehicle
-	 */
-	public void run() {
+    /**
+     * Run the vehicle
+     */
+    @Override
+    public void run() {
 
-		logger.info("**********Démarrage du véhicule**********");
-		char[] i = vehicle.getInstructions().toCharArray();
-		for (char c : i) {
-			Action a = Vehicle.getActions().get(c);
-			if (a != null) {
-				move(a);
-			} else {
-				logger.warn("Instruction {} non reconnue", c);
-			}
+        MDC.put("vehiclename", this.vehicle.getName());
 
-		}
-		logger.info("Position finale: {}", vehicle.toString());
-		logger.info("**********Fin**********");
-	}
+        logger.info("**********Démarrage du véhicule**********");
+        char[] i = this.vehicle.getInstructions().toCharArray();
+        for (char c : i) {
+            Action a = Vehicle.getActions().get(c);
+            if (a != null) {
+                move(a);
+            }
+            else {
+                logger.warn("Instruction {} non reconnue", c);
+            }
 
-	/**
-	 * Move a vehicle 
-	 * @param action action to move the vehicle
-	 */
-	public void move(Action action) {
+        }
+        logger.info("Position finale: {}", this.vehicle.toString());
+        logger.info("**********Fin**********");
 
-		logger.info("Mouvement de type {}", action.getCode());
-		logger.debug("Avant: {}", vehicle.toString());
+        MDC.remove("vehiclename");
+    }
 
-		OrientationEnum o = vehicle.getOrientation();
+    /**
+     * Move a vehicle
+     * 
+     * @param action action to move the vehicle
+     */
+    public void move(final Action action) {
 
-		vehicle.setOrientation(o.turn(action.getRotation()));
+        logger.info("Mouvement de type {}", action.getCode());
+        logger.debug("Avant: {}", this.vehicle.toString());
 
-		int newX = vehicle.getX() + action.getStraight() * o.gapX;
-		int newY = vehicle.getY() + action.getStraight() * o.gapY;
+        OrientationEnum o = this.vehicle.getOrientation();
 
-		if (isWithinBoundaries(newX, newY)) {
-			vehicle.setX(newX);
-			vehicle.setY(newY);
-		} else {
-			logger.warn("Le véhicule a atteint la limite de la pelouse!");
-		}
+        this.vehicle.setOrientation(o.turn(action.getRotation()));
 
-		logger.debug("Après: {}", vehicle.toString());
+        int newX = this.vehicle.getX() + (action.getStraight() * o.gapX);
+        int newY = this.vehicle.getY() + (action.getStraight() * o.gapY);
 
-	}
+        if (isWithinBoundaries(newX, newY)) {
+            this.vehicle.setX(newX);
+            this.vehicle.setY(newY);
+        }
+        else {
+            logger.warn("Le véhicule a atteint la limite de la pelouse!");
+        }
 
-	private boolean isWithinBoundaries(int x, int y) {
+        logger.debug("Après: {}", this.vehicle.toString());
 
-		if (x <= lawn.getWidth() && x>=0 && y <= lawn.getHeight() && y>=0) {
-			return true;
-		}
+    }
 
-		return false;
+    private boolean isWithinBoundaries(final int x, final int y) {
 
-	}
+        if ((x <= this.lawn.getWidth()) && (x >= 0) && (y <= this.lawn.getHeight()) && (y >= 0)) {
+            return true;
+        }
+
+        return false;
+
+    }
 }
