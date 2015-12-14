@@ -1,4 +1,4 @@
-package test;
+package com.mowitnow.supermower3000.test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -62,24 +62,6 @@ public class IntegrationTest {
 		
 	}
 	
-	/**
-	 * Ceci est un test qui teste
-	 * @throws BusinessException
-	 * @throws IOException 
-	 */
-	@Test
-	public void reachLimitLawnTest() throws BusinessException, IOException {
-
-		DescriptionReader builder = new DescriptionReader();
-		Vehicle mower1 = builder.buildMower("1 2 N", "AAAAAAAADAAAAAAAAAA");
-		Lawn l = builder.buildLawn("5 8");
-		VehicleRunner m1 = new VehicleRunner(mower1, l);
-
-		m1.run();
-		assertThat(mower1.getX(), equalTo(5));
-		assertThat(mower1.getY(), equalTo(8));
-		assertThat(mower1.getOrientation(), equalTo(OrientationEnum.E));
-		
-	}
+	
 
 }
