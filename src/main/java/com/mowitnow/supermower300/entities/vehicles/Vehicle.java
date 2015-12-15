@@ -6,7 +6,7 @@ import com.mowitnow.supermower300.constant.OrientationEnum;
 import com.mowitnow.supermower300.entities.Action;
 
 /**
- * Describe a Vehicle with position, orientation and available actions
+ * Describe a Vehicle with position, orientation and an empty list of available actions
  * 
  * @author Julien
  *

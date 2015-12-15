@@ -9,7 +9,7 @@ import com.mowitnow.supermower300.entities.vehicles.*;
 import org.slf4j.*;
 
 /**
- * Drive a vehicle on a lawn
+ * Drive a {@linkplain Vehicle} vehicle on a {@linkplain Lawn}
  * <p>
  * Implements {@linkplain Runnable} to be launch by a {@linkplain Executor}
  * <p>
