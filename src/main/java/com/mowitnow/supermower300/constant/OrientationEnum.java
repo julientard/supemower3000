@@ -2,73 +2,75 @@ package com.mowitnow.supermower300.constant;
 
 public enum OrientationEnum {
 
-	N(0, 0, 1), 
-	S(180, 0, -1), 
-	E(90, 1, 0), 
-	O(270, -1, 0);
+    N(0, 0, 1),
+    S(180, 0, -1),
+    E(90, 1, 0),
+    O(270, -1, 0);
 
-	private OrientationEnum(int degree, int gapX, int gapY) {
-		this.degree = degree;
-		this.gapX = gapX;
-		this.gapY = gapY;
-	}
+    private OrientationEnum(final int degree, final int gapX, final int gapY) {
+        this.degree = degree;
+        this.gapX = gapX;
+        this.gapY = gapY;
+    }
 
-	/**
-	 * Orientation en degrés
-	 */
-	public int degree;
+    /**
+     * Angle in degree
+     */
+    public int degree;
 
-	/**
-	 * Facteur à appliquer en X lors d'un déplacement
-	 */
-	public int gapX;
+    /**
+     * mouvement on x axe
+     */
+    public int gapX;
 
-	/**
-	 * Facteur à appliquer en Y lors d'un déplacement
-	 */
-	public int gapY;
+    /**
+     * mouvement on y axe
+     */
+    public int gapY;
 
-	public int getGapX() {
-		return gapX;
-	}
 
-	public int getGapY() {
-		return gapY;
-	}
+    public int getGapX() {
+        return this.gapX;
+    }
 
-	public int getDegree() {
-		return degree;
-	}
+    public int getGapY() {
+        return this.gapY;
+    }
 
-	
-	private static OrientationEnum getByDegree(int degree) {
-		for (OrientationEnum e : OrientationEnum.values()) {
-			if (e.degree == degree) {
-				return e;
-			}
-		}
-		return null;
-	}
+    public int getDegree() {
+        return this.degree;
+    }
 
-	/**
-	 * Effectue une rotation
-	 * @param mouvement valeur de la rotation en degrés
-	 * @return la nouvelle {@linkplain OrientationEnum}
-	 */
-	public OrientationEnum turn(int mouvement) {
+    private static OrientationEnum getByDegree(final int degree) {
+        for (OrientationEnum e : OrientationEnum.values()) {
+            if (e.degree == degree) {
+                return e;
+            }
+        }
+        return null;
+    }
 
-		int out = this.degree + mouvement;
+    /**
+     * Make a turn from this {@linkplain OrientationEnum}
+     * 
+     * @param rotation angle in degree
+     * @return the new {@linkplain OrientationEnum}
+     */
+    public OrientationEnum turn(final int rotation) {
 
-		if (out < 0) {
-			out = out + 360;
-		} else if (out >= 360) {
-			out = out - 360;
-		}
+        int out = this.degree + rotation;
 
-		OrientationEnum o = OrientationEnum.getByDegree(out);
+        if (out < 0) {
+            out = out + 360;
+        }
+        else if (out >= 360) {
+            out = out - 360;
+        }
 
-		return o;
+        OrientationEnum o = OrientationEnum.getByDegree(out);
 
-	}
+        return o;
+
+    }
 
 }
