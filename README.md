@@ -17,7 +17,7 @@ Le jar executable est généré grâce au plugin Maven Shade.
 Pour l'execution, executer la commande suivante `mvn package`
 Executer ensuite le jar généré avec en paramètre un fichier d'instructions `java -jar super-mower-3000-1.0.jar fichier.txt`
 Si aucun fichier n'est renseigné en argument, l'utilisateur y sera invité ultérieurement.
-La restitution à l'utilisateur se fait par la console et par un fichier de log 'supermower3000-log.txt' à l'emplacement d'execution du programme.
+La restitution à l'utilisateur se fait par la console et par un fichier de log `supermower3000-log.txt` à l'emplacement d'execution du programme.
 
 ## Conception
 Le supermower3000 est amorcé par la classe `App` qui lit le fichier.
