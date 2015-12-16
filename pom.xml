@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mowitnow</groupId>
 	<artifactId>super-mower-3000</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>Automatic mower</name>
 	<description>Driver for super-mower-3000</description>
 
@@ -12,6 +12,7 @@
 		<logback.version>1.1.2</logback.version>
 		<java-hamcrest.version>2.0.0.0</java-hamcrest.version>
 		<junit.version>4.12</junit.version>
+		<commons-io.version>2.4</commons-io.version>
 	</properties>
 
 	<dependencies>
@@ -46,11 +47,19 @@
 			<version>${junit.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+
+
 
 	</dependencies>
 
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -60,7 +69,27 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.mowitnow.supermower300.main.App</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
