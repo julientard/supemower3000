@@ -33,20 +33,20 @@ public class DescriptionReaderTest {
     /**
      * .Test a failed lawn instanciation
      * 
-     * @throws BusinessException
+     * @throws BusinessException if regex not respected
      */
     @Test(expected = BusinessException.class)
     public void lawnErrorRegexTest() throws BusinessException {
 
         DescriptionReader lawnFact = new DescriptionReader();
-        Lawn l = lawnFact.buildLawn("5 X");
+        lawnFact.buildLawn("5 X");
     }
 
 
     /**
      * Test a mower instanciation
      * 
-     * @throws BusinessException
+     * @throws BusinessException if regex not respected
      */
     @Test
     public void mowerSucessTest() throws BusinessException {
@@ -63,14 +63,13 @@ public class DescriptionReaderTest {
     /**
      * .Test a failed mower instanciation
      * 
-     * @throws BusinessException
+     * @throws BusinessException if regex not respected
      */
     @Test(expected = BusinessException.class)
     public void mowerFailedTest() throws BusinessException {
 
         DescriptionReader builder = new DescriptionReader();
-        Vehicle mower = builder.buildMower("1 2 X", "GAGAGXRG5AGAA");
-
+        builder.buildMower("1 2 X", "GAGAGXRG5AGAA");
 
     }
 }
