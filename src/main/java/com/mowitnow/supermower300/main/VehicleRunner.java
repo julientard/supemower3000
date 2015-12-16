@@ -39,7 +39,8 @@ public class VehicleRunner implements Runnable {
 
         MDC.put("vehiclename", this.vehicle.getName());
 
-        logger.info("**********Démarrage du véhicule**********");
+        logger.info("**********Demarrage du vehicule**********");
+        logger.info(" => Position initiale: {}", this.vehicle.toString());
         char[] i = this.vehicle.getInstructions().toCharArray();
         for (char c : i) {
             Action a = Vehicle.getActions().get(c);
@@ -49,9 +50,8 @@ public class VehicleRunner implements Runnable {
             else {
                 logger.warn("Instruction {} non reconnue", c);
             }
-
         }
-        logger.info("Position finale: {}", this.vehicle.toString());
+        logger.info(" => Position finale: {}", this.vehicle.toString());
         logger.info("**********Fin**********");
 
         MDC.remove("vehiclename");
@@ -79,10 +79,10 @@ public class VehicleRunner implements Runnable {
             this.vehicle.setY(newY);
         }
         else {
-            logger.warn("Le véhicule a atteint la limite de la pelouse!");
+            logger.warn("Le vehicule a atteint la limite de la pelouse!");
         }
 
-        logger.debug("Après: {}", this.vehicle.toString());
+        logger.debug("Apres: {}", this.vehicle.toString());
 
     }
 

@@ -13,7 +13,7 @@ import com.mowitnow.supermower300.entities.Action;
 public class Mower extends Vehicle {
 
     static {
-        actions = new HashMap<Character, Action>();
+        actions = new HashMap<>();
         actions.put('G', new Action('G', -90, 0));
         actions.put('D', new Action('D', 90, 0));
         actions.put('A', new Action('A', 0, 1));

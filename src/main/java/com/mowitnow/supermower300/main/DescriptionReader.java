@@ -77,10 +77,7 @@ public class DescriptionReader {
             Lawn l = new Lawn(width, height);
             return l;
         }
-        else {
-            throw new BusinessException(
-                    "La description de la pelouse ne respecte pas le bon format");
-        }
+        throw new BusinessException("La description de la pelouse ne respecte pas le bon format");
     }
 
 
@@ -128,14 +125,11 @@ public class DescriptionReader {
             mower.setX(x);
             mower.setY(y);
             String orientation = m.group(3);
-            logger.info("Construction d'une tondeuse de position initiale (x,y) ({},{}) direction {} ayant pour instructions", x, y, orientation, instructions);
+            logger.info("Construction d'une tondeuse de position initiale (x,y) ({},{}) direction {} ayant pour instructions {}", x, y, orientation, instructions);
             mower.setOrientation(OrientationEnum.valueOf(orientation));
             mower.setInstructions(instructions);
             return mower;
         }
-        else {
-            throw new BusinessException(
-                    "La description de la tondeuse ne respecte pas le bon format");
-        }
+        throw new BusinessException("La description de la tondeuse ne respecte pas le bon format");
     }
 }
