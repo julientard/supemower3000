@@ -1,64 +1,70 @@
 package com.mowitnow.supermower300.main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 import com.mowitnow.supermower300.exception.BusinessException;
 
+import org.apache.commons.io.FileUtils;
+import org.slf4j.*;
+
 public class App {
 
-	private final static Logger logger = LoggerFactory.getLogger(App.class);
+    private final static Logger logger = LoggerFactory.getLogger(App.class);
 
-	public static void main(String[] args) {
+    public static void main(final String[] args) {
 
-		logger.info("********************* MowItNow 1.0 *********************");
+        logger.info("********************* MowItNow 1.0 *********************");
 
-		File f = null;
-		if (args != null && args.length > 0) {
-			f = new File(args[0]);
-		}
+        // Get the file path from console or args
+        String f;
+        if ((args == null) || (args.length == 0)) {
+            try (Scanner scanner = new Scanner(System.in)) {
+                logger.info("Entrez le chemin d'un fichier: ");
+                f = scanner.next();
+                scanner.close();
+            }
+        }
 
-		try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-			String line = null;
-			List<String> input = new ArrayList<String>();
+        else {
+            f = args[0];
+        }
 
-			while ((line = br.readLine()) != null) {
-				input.add(line);
-			}
+        // Read file and execute mowers
+        try {
+            List<String> input = FileUtils.readLines(new File(f));
 
-			DescriptionReader descriptionReader = new DescriptionReader();
-			List<VehicleRunner> vehicles = descriptionReader
-					.buildVehiclesRunner(input);
+            DescriptionReader descriptionReader = new DescriptionReader();
+            List<VehicleRunner> vehicles = descriptionReader.buildVehiclesRunner(input);
 
-			// Instanciation de l'executor
-			Executor executor = getExecutor();
-			// Execution de chaque tondeuse
-			for (VehicleRunner runner : vehicles) {
-				executor.execute(runner);
-			}
-		} catch (IOException e) {
-			logger.error("Problème d'accès au fichier");
-		} catch (NumberFormatException | BusinessException e) {
-			logger.error("Problème de parsing des informations: {}",
-					e.getMessage());
+            // New single executorservice
+            ExecutorService executor = getExecutor();
+            // Run each mower
+            for (VehicleRunner runner : vehicles) {
+                executor.execute(runner);
+            }
 
-			logger.info("********************* MowItNow 1.0 *********************");
-		}
+            executor.shutdown();
+            executor.awaitTermination(30, TimeUnit.SECONDS);
+        }
+        catch (IOException e) {
+            logger.error("Problème d'accès au fichier: {}", e.getMessage());
+        }
+        catch (NumberFormatException | BusinessException e) {
+            logger.error("Problème de parsing des informations: {}", e.getMessage());
 
-	}
+            logger.info("********************* MowItNow 1.0 *********************");
+        }
+        catch (InterruptedException e) {
+            logger.error("Problème d'execution d'une tâche: {}", e.getMessage());
+        }
 
-	public static Executor getExecutor() {
-		Executor executor = Executors.newSingleThreadExecutor();
-		return executor;
-	}
+    }
+
+    public static ExecutorService getExecutor() {
+        ExecutorService exe = Executors.newSingleThreadExecutor();
+        return exe;
+    }
 
 }
